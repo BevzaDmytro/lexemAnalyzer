@@ -8,6 +8,10 @@ public class IdentificatorsTable {
     private ArrayList<Lexem> lexems;
 
 
+    public ArrayList<Lexem> getLexems() {
+        return lexems;
+    }
+
     public IdentificatorsTable() {
         this.lexems = new ArrayList<>(1);
     }
@@ -32,18 +36,19 @@ public class IdentificatorsTable {
         return i;
     }
 
-    public void showTable(){
-        int i=1;
-        System.out.format("\u2551%1s\u2551%7s\u2551%4s\u2551\n",'№',"Name","Type");
-        for(int j=0;j<32;j++) System.out.format("\u2550");
-        System.out.format("\n");
-        for ( Lexem lex : this.lexems ) {
+//    public void showTable(){
+//        int i=1;
+//        System.out.format("\u2551%1s\u2551%7s\u2551%4s\u2551\n",'№',"Name","Type");
+//        for(int j=0;j<32;j++) System.out.format("\u2550");
+//        System.out.format("\n");
+//        for ( Lexem lex : this.lexems ) {
+//
+//            System.out.format("\u2551%2s\u2551%7s\u2551%4s\u2551\n",i,lex.getName(),lex.getIdType());
+//            for(int j=0;j<32;j++) System.out.format("\u2550");
+//            System.out.format("\n");
+////            System.out.format("\u2551%25s\u2551\n","-------------------------");
+//            i++;
+//        }
+//    }
 
-            System.out.format("\u2551%2s\u2551%7s\u2551%4s\u2551\n",i,lex.getName(),lex.getIdType());
-            for(int j=0;j<32;j++) System.out.format("\u2550");
-            System.out.format("\n");
-//            System.out.format("\u2551%25s\u2551\n","-------------------------");
-            i++;
-        }
-    }
 }

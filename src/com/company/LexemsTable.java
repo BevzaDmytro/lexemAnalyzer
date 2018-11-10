@@ -6,20 +6,9 @@ import com.company.extensions.Lexem;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
-public class LexemsTable extends AbstractTableModel {
+public class LexemsTable  {
     private ArrayList<Lexem> lexems;
 
-    public int getRowCount() {
-        return 10;
-    }
-    @Override
-    public int getColumnCount() {
-        return 10;
-    }
-    @Override
-    public Object getValueAt(int r, int c) {
-        return r * c;
-    }
 
 
     public LexemsTable() {
@@ -80,5 +69,9 @@ public class LexemsTable extends AbstractTableModel {
 //            System.out.format("\u2551%25s\u2551\n","-------------------------");
             i++;
         }
+    }
+
+    public ArrayList<Lexem> getLexems() {
+        return this.lexems;
     }
 }

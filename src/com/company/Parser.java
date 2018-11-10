@@ -3,6 +3,7 @@ package com.company;
 import com.company.extensions.InputLexemTable;
 import com.company.extensions.Lexem;
 import com.company.extensions.Checker;
+import com.company.graph.MyFrame;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -364,8 +365,11 @@ public class Parser {
 
         lexemsTable.showTable();
         System.out.println("IDN");
-        identificatorsTable.showTable();
+//        identificatorsTable.showTable();
         System.out.println("CON");
-        constantsTable.showTable();
+//        constantsTable.showTable();
+
+        MyFrame frame = new MyFrame();
+        frame.show(lexemsTable.getLexems(),identificatorsTable.getLexems(), constantsTable.getLexems());
     }
 }

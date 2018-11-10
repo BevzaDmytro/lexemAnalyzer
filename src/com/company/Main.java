@@ -9,8 +9,7 @@ public class Main {
         Parser parser = new Parser();
         parser.parse();
 
-        MyFrame frame = new MyFrame();
-        frame.show();
+
 
   //TODO доробити таблиці, перевірка на тип
     }

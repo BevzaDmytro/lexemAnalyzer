@@ -1,0 +1,10 @@
+int a,b,c
+
+{
+cin>>a
+if a!=b then cout<<a
+
+if a>=c then cout<<a
+
+if a < c then cout<< -.1 << a +c + 2 + -1.2
+}

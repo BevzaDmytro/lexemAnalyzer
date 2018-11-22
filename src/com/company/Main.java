@@ -9,8 +9,5 @@ public class Main {
         Parser parser = new Parser();
         parser.parse();
 
-
-
-  //TODO доробити таблиці, перевірка на тип
     }
 }

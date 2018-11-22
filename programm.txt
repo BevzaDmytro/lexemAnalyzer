@@ -1,10 +1,8 @@
-int a,b,c
-
+int a,b,c, ids
 {
-cin>>a
-if a!=b then cout<<a
-
-if a>=c then cout<<a
-
-if a < c then cout<< -.1 << a +c + 2 + -1.2
+cin>>a>>b
+if a!=b AND [a>=b OR a>b] then cout<<a fi
+if a < c OR a <= c OR a == c then cout<< -.1 << a fi
+for a=+12 by 10 to a+1 do a=a*a rof
+a = a>b ? a : b
 }

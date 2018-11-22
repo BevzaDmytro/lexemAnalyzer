@@ -40,6 +40,12 @@ public class InputLexemTable {
         this.lexems.put(30, "-");
         this.lexems.put(31, "*");
         this.lexems.put(32, "/");
+        this.lexems.put(33, "\n");
+        this.lexems.put(34, "AND");
+        this.lexems.put(35, "OR");
+        this.lexems.put(36, "NOT");
+        this.lexems.put(37, "[");
+        this.lexems.put(38, "]");
         this.lexems.put(100, "IDN");
         this.lexems.put(101,"101");
 

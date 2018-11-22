@@ -68,15 +68,6 @@ public class Parser {
                  symbol = (char) c;
             }
 
-//            if(checker.isWhiteDelimiter(symbol)){
-////                System.out.println("White delimiter\n");
-//                continue;
-//            }
-//            if(checker.isEnter(symbol)){
-//                System.out.println("White delimiter\n");
-//                continue;
-//            }
-
             switch(this.state){
                 case 1:
                     if(!this.hasToRead){
@@ -84,13 +75,9 @@ public class Parser {
                         this.hasToRead = true;
                     }
                     if(checker.isWhiteDelimiter(symbol)){
-//                System.out.println("White delimiter\n");
                         continue;
                     }
-                    if(checker.isNewLine(symbol)){
-                        if(symbol == '\n') line++;
-                        continue;
-                    }
+
                     if(checker.isLetter(symbol)) {
                         this.lexem += Character.toString(symbol);
                         this.state = 2;
@@ -101,10 +88,6 @@ public class Parser {
                         this.state = 3;
                         continue;
                     }
-//                    else if(checker.isPlusOrMinus(symbol)){
-//                        this.lexem += Character.toString(symbol);
-//                        this.state = 4;
-//                    }
                     else if(checker.isDot(symbol)){
                         this.lexem += Character.toString(symbol);
                         this.state = 6;
@@ -115,12 +98,22 @@ public class Parser {
                            this.state = 4;
                            continue;
                         }
+                        if(checker.isNewLine(symbol)){
+                            if(symbol == '\n') {
+                                this.lexem += Character.toString('¶');
+                                Lexem newLex = new Lexem(this.lexem, "OneCharDelimiter", line);
+                                newLex.setCode(inputLexemTable.getCode(newLex));
+                                lexemsTable.addLexem(newLex);
+                                line++;
+                                this.lexem = "";
+                            }
+                            continue;
+                        }
                         this.lexem += Character.toString(symbol);
                         Lexem newLex = new Lexem(this.lexem, "OneCharDelimiter", line);
                         if(inputLexemTable.isContain(newLex)) {
                             newLex.setCode(inputLexemTable.getCode(newLex));
                             lexemsTable.addLexem(newLex);
-//                        System.out.println("Lexem added: " + this.lexem);
                             this.lexem = "";
                         }
                         else throw new Exception("Not defined in lexems table");
@@ -135,17 +128,16 @@ public class Parser {
                         this.state = 8;
                         continue;
                     }
-                    else if(checker.isEqualMark(symbol) || checker.isNoMark(symbol)){
+                    else if(checker.isEqualMark(symbol)){
                         this.lexem += Character.toString(symbol);
                         this.state = 9;
                         continue;
                     }
-//                    else if(checker.isNoMark(symbol)){
-//                        this.lexem += Character.toString(symbol);
-//                        this.state = 10;
-
-//                        continue;
-//                    }
+                    else if(checker.isNoMark(symbol)){
+                        this.lexem += Character.toString(symbol);
+                        this.state = 10;
+                        continue;
+                    }
                     else {
                         this.EOF = true;
                         throw new Exception("Undefined symbol " + symbol + " Line: " + line);
@@ -175,7 +167,7 @@ public class Parser {
                                 identificatorsTable.addIdentificator(newLex);
                             }
                             else {
-                                throw new Exception("Variable " + this.lexem + "is already defined(line" + line + ")");
+                                throw new Exception("Variable " + this.lexem + "is already defined(line " + line + " )");
                             }
                         }
                         else{
@@ -222,7 +214,6 @@ public class Parser {
                         this.state = 6;
                     }
                     else{
-//                        System.out.println("ERROR Unexcpected symbol after znak on line " + line);
                         throw new Exception("Unexpected symbol after " + this.lexem + " on line " + line);
                     }
                     break;
@@ -265,12 +256,14 @@ public class Parser {
                     if(checker.isLessMark(symbol) || checker.isEqualMark(symbol)){
                         this.lexem += Character.toString(symbol);
                         newLex = new Lexem(this.lexem, "Delimiter", line);
+
                         if(inputLexemTable.isContain(newLex)) {
                             newLex.setCode(inputLexemTable.getCode(newLex));
                             lexemsTable.addLexem(newLex);
                         }
                         else throw new Exception("Not declarated in lexems table");
 //                        System.out.println("Lexem added: " + this.lexem);
+
                         this.lexem = "";
                         this.state = 1;
                     }
@@ -341,21 +334,34 @@ public class Parser {
                     }
                     break;
 
-//                case 10:
-//                    if(checker.isEqualMark(symbol)){
-//                        this.lexem += Character.toString(symbol);
-//                        lexemsTable.addLexem(new Lexem(this.lexem, "OneCharDelimiter"));
-//                        System.out.println("Lexem added: " + this.lexem);
-//                        this.lexem = "";
-//                        this.state = 1;
-//                    }
-//                    else{
-//                        lexemsTable.addLexem(new Lexem(this.lexem, "CON"));
-//                        System.out.println("Lexem added: " + this.lexem);
-//                        this.hasToRead = false;
-//                        this.state = 1;
-//                    }
-//                    break;
+                case 10:
+                    newLex = new Lexem(this.lexem, "Delimiter", line);
+                    if(checker.isEqualMark(symbol)){
+                        this.lexem += Character.toString(symbol);
+
+                        newLex = new Lexem(this.lexem, "Delimiter", line);
+                        if(inputLexemTable.isContain(newLex)) {
+                            newLex.setCode(inputLexemTable.getCode(newLex));
+                            lexemsTable.addLexem(newLex);
+                        }
+                        else throw new Exception("Not declarated in lexems table: " + this.lexem);
+
+
+                        this.lexem = "";
+                        this.state = 1;
+                    }
+                    else{
+
+                        if(inputLexemTable.isContain(newLex)) {
+                            newLex.setCode(inputLexemTable.getCode(newLex));
+                            lexemsTable.addLexem(newLex);
+                        }
+                        else throw new Exception("Excepted '=' on line "+ line);
+
+                        this.hasToRead = false;
+                        this.state = 1;
+                    }
+                    break;
 
                   default:
                       break;
@@ -371,5 +377,8 @@ public class Parser {
 
         MyFrame frame = new MyFrame();
         frame.show(lexemsTable.getLexems(),identificatorsTable.getLexems(), constantsTable.getLexems());
+
+        SyntaxAnalyzer analyzer = new SyntaxAnalyzer(lexemsTable);
+        analyzer.prog();
     }
 }

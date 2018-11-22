@@ -28,7 +28,7 @@ public class Checker {
     }
 
     public boolean isOneCharDelimiter(char ch){
-        return ( ch == '(' || ch == ')' || ch == ',' || ch =='{' || ch == '}' || ch == '*' || ch == '/' || ch == '+' || ch == '-' || ch == ':' || ch == '?');
+        return ( ch == '(' || ch == ')' || ch == ',' || ch =='{' || ch == '}' || ch == '*' || ch == '/' || ch == '+' || ch == '-' || ch == ':' || ch == '?' || ch =='\n' || ch=='\r' || ch == '[' || ch == ']');
     }
     public boolean isNewLine(char ch){
         return (ch == '\r' || ch == '\n');
@@ -63,6 +63,7 @@ public class Checker {
     public boolean isKeyword(String string){
         return (string.equals("int") || string.equals("float") || string.equals("for") || string.equals("rof") ||
                 string.equals("by") ||  string.equals("do") ||  string.equals("to") ||  string.equals("if") ||
-                string.equals("then") ||  string.equals("fi") || string.equals("cin") ||  string.equals("cout"));
+                string.equals("then") ||  string.equals("fi") || string.equals("cin") ||  string.equals("cout")
+                ||  string.equals("OR") || string.equals("AND") ||  string.equals("NOT"));
     }
 }

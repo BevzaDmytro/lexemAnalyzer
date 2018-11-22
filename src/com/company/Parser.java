@@ -378,7 +378,7 @@ public class Parser {
         MyFrame frame = new MyFrame();
         frame.show(lexemsTable.getLexems(),identificatorsTable.getLexems(), constantsTable.getLexems());
 
-//        SyntaxAnalyzer analyzer = new SyntaxAnalyzer(lexemsTable);
-//        analyzer.prog();
+        SyntaxAnalyzer analyzer = new SyntaxAnalyzer(lexemsTable);
+        analyzer.prog();
     }
 }

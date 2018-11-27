@@ -2,6 +2,7 @@ package com.company;
 
 public class SyntaxAnalyzer {
     private int i = 0;
+    private int checkStep = 0;
 
     private LexemsTable lexems;
 
@@ -25,7 +26,7 @@ public class SyntaxAnalyzer {
                     }
                     }
                     else{
-                    throw new Exception("Bad list of operators!");
+                    throw new Exception("Unexcpected operator " + lexems.getLexems().get(this.i).getName() +" on line "+ line());
                 }
                 }
                 else{
@@ -127,17 +128,18 @@ public class SyntaxAnalyzer {
 
     public boolean spOp() throws Exception {
         if(Op()){
+            this.i++;
             if(lexems.getLexems().get(this.i).getName().equals("¶")){
                 this.i++;
 //                while (!lexems.getLexems().get(this.i).getName().equals("}")){
                 while (Op()){
 //                    if(Op()){
-//                        this.i++;
+                        this.i++;
                         if(lexems.getLexems().get(this.i).getName().equals("¶")) {
                             this.i++;
                         }
                         else{
-                            throw new Exception("You lost enter after operation!");
+                            throw new Exception("You lost enter after operation! on line "+ (line()-1));
                         }
                     }
                     return true;
@@ -145,6 +147,7 @@ public class SyntaxAnalyzer {
 //                        throw new Exception("No operations");
 //                    }
                 }
+                this.i--;
                 return true;
             }
             else{
@@ -195,12 +198,14 @@ public class SyntaxAnalyzer {
                     if (isIDN()) {
                         this.i++;
                     } else {
-                        throw new Exception("Its not IDN!");
+                        throw new Exception("Its not IDN! on line "+line());
                     }
                 } else {
-                    throw new Exception("Missed >>");
+                    throw new Exception("Missed >> on line "+line());
                 }
-            }while(!isLexemEqual("¶"));
+//            }while(!isLexemEqual("¶"));
+            }while(isLexemEqual(">>"));
+            this.i--;
             return true;
 
         }
@@ -224,6 +229,7 @@ public class SyntaxAnalyzer {
                 }
 //            }while(!isLexemEqual("¶"));
             }while(isLexemEqual("<<"));
+            this.i--;
             return true;
 
         }
@@ -232,6 +238,7 @@ public class SyntaxAnalyzer {
     }
 
     public boolean assignment() throws Exception {
+        this.checkStep = this.i;
         if(isIDN()){
             this.i++;
             if(isLexemEqual("=")){
@@ -240,7 +247,7 @@ public class SyntaxAnalyzer {
                     return true;
                 }
                 else{
-                    this.i = this.i-2;
+                    this.i = this.checkStep;
                     return false;
 //                    throw new Exception("Missing expression!");
                 }
@@ -253,16 +260,17 @@ public class SyntaxAnalyzer {
     }
 
     public boolean tern() throws Exception {
+        this.checkStep = this.i;
         if(isIDN()){
             this.i++;
             if(isLexemEqual("=")){
                 this.i++;
                 if(LE()){
-//                    this.i++;
+                    this.i++;
                     if(isLexemEqual("?")){
                         this.i++;
                         if(expression()){
-//                            this.i++;
+                            this.i++;
                             if(isLexemEqual(":")){
                                 this.i++;
                                 if(expression()){
@@ -286,7 +294,7 @@ public class SyntaxAnalyzer {
                     }
                 }
                 else {
-                    this.i = this.i-4;
+                    this.i = this.checkStep;
                     return false;
 //                    throw new Exception("It's not LE");
                 }
@@ -304,12 +312,12 @@ public class SyntaxAnalyzer {
         if(isLexemEqual("if")){
             this.i++;
             if(LE()){
-//                this.i++;
+                this.i++;
                 if(isLexemEqual("then")){
                     this.i++;
                     if(spOp()){
+                        this.i++;
                         if(isLexemEqual("fi")){
-                            this.i++;
                             return true;
                         }
                         else throw new Exception("Wrong end of IF statement on line "+line());
@@ -331,21 +339,20 @@ public class SyntaxAnalyzer {
         if(isLexemEqual("for")){
             this.i++;
             if(assignment()){
-//                this.i++;
+                this.i++;
                 if(isLexemEqual("by")){
                     this.i++;
                     if(expression()){
-//                        this.i++;
+                        this.i++;
                         if(isLexemEqual("to")){
                             this.i++;
                             if(expression()){
-//                                this.i++;
+                                this.i++;
                                 if(isLexemEqual("do")){
                                     this.i++;
                                     if(spOp()){
                                         this.i++;
                                         if(isLexemEqual("rof")){
-                                            this.i++;
                                             return true;
                                         }
                                         else throw new Exception("Missed reyword ROF");
@@ -377,6 +384,7 @@ public class SyntaxAnalyzer {
 
     private boolean expression() throws Exception {
         if(isT()){
+            this.i++;
             if(isLexemEqual("+") || isLexemEqual("-")){
                 this.i++;
                 if(isT()){
@@ -386,7 +394,10 @@ public class SyntaxAnalyzer {
             }
 
 
-            else return true;
+            else {
+                this.i--;
+                return true;
+            }
         }
         return false;
     }
@@ -405,7 +416,11 @@ public class SyntaxAnalyzer {
                         return true;
                     } else throw new Exception("Missed terminal on line " + line());
 
-                } else return true;
+                } else
+                {
+                    this.i--;
+                    return true;
+                }
             }
 
         return false;
@@ -436,19 +451,16 @@ public class SyntaxAnalyzer {
 
     private boolean LE() throws Exception {
         if(isLT()) {
-//            this.i++;
-            do{
-                if (isLexemEqual("OR")) {
-                    this.i++;
-//                    if(!isLT()){
-//                        throw new Exception("Missed logic terminal on line " + line());
-//                    }
-//                    if (isLT()) {
-//                        return true;
-//                    } else throw new Exception("Missed logic terminal on line " + line());
-                }
+            this.i++;
 
-             }while (isLT());
+            while(isLexemEqual("OR")){
+                this.i++;
+                if (isLT()) {
+                    this.i++;
+                } else throw new Exception("Missed logic terminal on line " + line());
+            }
+
+            this.i--;
             return true;
         }
         else return false;
@@ -456,14 +468,17 @@ public class SyntaxAnalyzer {
 
     private boolean isLT() throws Exception {
         if(isLF()){
-//            this.i++;
-            if(isLexemEqual("AND")){
-                this.i++;
-                if(isLF()){
-                    return true;
-                }
-                else throw new Exception("Missed logic terminal on line "+ line());
+            this.i++;
+
+            while(isLexemEqual("AND")){
+                    this.i++;
+                    if (isLF()) {
+                        this.i++;
+                    }
+                    else throw new Exception("Missed logic terminal on line " + line());
             }
+
+            this.i--;
             return true;
         }
         else return false;
@@ -480,9 +495,9 @@ public class SyntaxAnalyzer {
         else if(isLexemEqual("[")){
             this.i++;
             if(LE()){
-//                this.i++;
+                this.i++;
                 if(isLexemEqual("]")){
-                    this.i++;
+//                    this.i++;
                     return true;
                 }
                 else throw new Exception("Missed ]on line "+ line());
@@ -497,7 +512,7 @@ public class SyntaxAnalyzer {
 
     private boolean isRelation() throws Exception {
         if(expression()){
-//            this.i++;
+            this.i++;
             if(isSG()){
                 this.i++;
                 if(expression()){
@@ -505,7 +520,9 @@ public class SyntaxAnalyzer {
                 }
                 else throw new Exception("Missed expression on line "+line());
             }
-            else return false;
+            else {
+                return false;
+            }
         }
         return false;
     }

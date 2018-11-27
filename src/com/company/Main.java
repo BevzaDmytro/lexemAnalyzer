@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.graph.MyFrame;
 
 public class Main {
 

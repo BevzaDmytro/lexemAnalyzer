@@ -385,19 +385,25 @@ public class SyntaxAnalyzer {
     private boolean expression() throws Exception {
         if(isT()){
             this.i++;
-            if(isLexemEqual("+") || isLexemEqual("-")){
+//            if(isLexemEqual("+") || isLexemEqual("-")){
+//                this.i++;
+//                if(isT()){
+//                    return true;
+//                }
+//                else throw new Exception("Missed terminal on line "+line());
+//            }
+            while (isLexemEqual("+") || isLexemEqual("-")){
                 this.i++;
                 if(isT()){
-                    return true;
+                    this.i++;
                 }
                 else throw new Exception("Missed terminal on line "+line());
             }
 
-
-            else {
+//            else {
                 this.i--;
                 return true;
-            }
+//            }
         }
         return false;
     }
@@ -410,17 +416,25 @@ public class SyntaxAnalyzer {
         if(isF()){
             this.i++;
 
-                if (isLexemEqual("*") || isLexemEqual("/")) {
-                    this.i++;
-                    if (isF()) {
-                        return true;
-                    } else throw new Exception("Missed terminal on line " + line());
+//                if (isLexemEqual("*") || isLexemEqual("/")) {
+//                    this.i++;
+//                    if (isF()) {
+//                        return true;
+//                    } else throw new Exception("Missed terminal on line " + line());
+//
+//                } else
+//                {
 
-                } else
-                {
+            while (isLexemEqual("*") || isLexemEqual("/")){
+                this.i++;
+                if(isF()){
+                    this.i++;
+                }
+                else throw new Exception("Missed terminal on line "+line());
+            }
                     this.i--;
                     return true;
-                }
+//                }
             }
 
         return false;

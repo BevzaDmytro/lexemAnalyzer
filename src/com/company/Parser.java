@@ -60,9 +60,9 @@ public class Parser {
         return reader;
     }
 
-    public void parse() throws Exception {
+    public void parse(boolean isFile, String text) throws Exception {
         
-        BufferedReader reader = this.textToParse(true, "programm.txt");
+        BufferedReader reader = this.textToParse(isFile, text);
 //        BufferedReader reader = this.textToParse(false, "int a, b, c");
 
         System.out.println("NICE");
@@ -391,10 +391,21 @@ public class Parser {
 //        System.out.println("CON");
 //        this.constantsTable.showTable();
 
-        MyFrame frame = new MyFrame();
-        frame.show(this.lexemsTable.getLexems(),this.identificatorsTable.getLexems(), this.constantsTable.getLexems());
+    }
 
-        SyntaxAnalyzer analyzer = new SyntaxAnalyzer(this.lexemsTable);
-        analyzer.prog();
+    public LexemsTable getLexemsTable() {
+        return lexemsTable;
+    }
+
+    public IdentificatorsTable getIdentificatorsTable() {
+        return identificatorsTable;
+    }
+
+    public ConstantsTable getConstantsTable() {
+        return constantsTable;
+    }
+
+    public InputLexemTable getInputLexemTable() {
+        return inputLexemTable;
     }
 }

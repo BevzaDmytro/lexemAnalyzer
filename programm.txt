@@ -1,4 +1,4 @@
-int a,b,c, ids
+int test,a,b,c, ids
 {
 c = a * b * (a + b/c) * (c)
 cin>>a>>b

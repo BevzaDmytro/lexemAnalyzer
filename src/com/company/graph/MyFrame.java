@@ -29,7 +29,7 @@ public class MyFrame {
     public MyFrame() {
         this.frame =  new JFrame("JTableExample");
         this.frame.getContentPane().setLayout(new FlowLayout());
-        this.frame.setSize(1000, 600);
+        this.frame.setSize(800, 500);
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.panel = new JTabbedPane();
@@ -47,6 +47,7 @@ public class MyFrame {
 
     public void inputData(){
         JPanel input = new JPanel();
+        input.setLayout(new FlowLayout());
         ButtonGroup group = new ButtonGroup();
         JRadioButton button1 = new JRadioButton("File", false);
         JRadioButton button2 = new JRadioButton("Input", false);
@@ -58,7 +59,7 @@ public class MyFrame {
         JButton browse = new JButton("Browse!");
         browse.setEnabled(false);
 
-        JTextArea in = new JTextArea("", 20, 10);
+        JTextArea in = new JTextArea("", 10, 40);
         in.setFont(new Font("Dialog", Font.PLAIN, 14));
         in.setTabSize(10);
         in.setLineWrap(true);

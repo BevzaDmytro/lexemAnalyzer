@@ -188,7 +188,7 @@ public class Parser {
                         }
                         else{
                             if (!this.identificatorsTable.isDefined(newLex)) {
-                                throw new Exception("Variable " + this.lexem + "is not defined");
+                                throw new Exception("Variable " + this.lexem + " is not defined");
                             }
                         }
                         newLex.setCode(100);

@@ -262,10 +262,7 @@ public class SyntaxAnalyzer {
     public boolean tern() throws Exception {
         this.checkStep = this.i;
         //stest
-        if(isIDN()){
-            this.i++;
-            if(isLexemEqual("=")){
-                this.i++;
+
                 if(LE()){
                     this.i++;
                     if(isLexemEqual("?")){
@@ -301,12 +298,9 @@ public class SyntaxAnalyzer {
 //                    throw new Exception("It's not LE");
                 }
             }
-            else{
-                throw new Exception("Missed =");
-            }
-        }
-        else return false;
-    }
+
+
+    
 
 
 

@@ -238,7 +238,7 @@ public class SyntaxAnalyzer {
             this.i++;
             if(isLexemEqual("=")){
                 this.i++;
-                if(expression() || tern()){
+                if(tern() || expression()){
                     return true;
                 }
                 else{
@@ -372,6 +372,7 @@ public class SyntaxAnalyzer {
     }
 
     private boolean expression() throws Exception {
+        this.checkStep = this.i;
         if(isT()){
             this.i++;
 //            if(isLexemEqual("+") || isLexemEqual("-")){
@@ -394,7 +395,10 @@ public class SyntaxAnalyzer {
                 return true;
 //            }
         }
-        return false;
+        else {
+            this.i = this.checkStep;
+            return false;
+        }
     }
 
     private int line() {

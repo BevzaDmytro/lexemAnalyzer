@@ -243,7 +243,7 @@ public class SyntaxAnalyzer {
             this.i++;
             if(isLexemEqual("=")){
                 this.i++;
-                if(expression()){
+                if(expression() || tern()){
                     return true;
                 }
                 else{
@@ -261,6 +261,7 @@ public class SyntaxAnalyzer {
 
     public boolean tern() throws Exception {
         this.checkStep = this.i;
+        //stest
         if(isIDN()){
             this.i++;
             if(isLexemEqual("=")){
@@ -293,6 +294,7 @@ public class SyntaxAnalyzer {
                         throw new Exception("Missed ? on line "+line());
                     }
                 }
+                //
                 else {
                     this.i = this.checkStep;
                     return false;

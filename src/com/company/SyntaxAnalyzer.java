@@ -131,9 +131,7 @@ public class SyntaxAnalyzer {
             this.i++;
             if(lexems.getLexems().get(this.i).getName().equals("¶")){
                 this.i++;
-//                while (!lexems.getLexems().get(this.i).getName().equals("}")){
                 while (Op()){
-//                    if(Op()){
                         this.i++;
                         if(lexems.getLexems().get(this.i).getName().equals("¶")) {
                             this.i++;
@@ -143,9 +141,6 @@ public class SyntaxAnalyzer {
                         }
                     }
                     return true;
-//                    else{
-//                        throw new Exception("No operations");
-//                    }
                 }
                 this.i--;
                 return true;
@@ -261,8 +256,6 @@ public class SyntaxAnalyzer {
 
     public boolean tern() throws Exception {
         this.checkStep = this.i;
-        //stest
-
                 if(LE()){
                     this.i++;
                     if(isLexemEqual("?")){

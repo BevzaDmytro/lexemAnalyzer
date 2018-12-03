@@ -1,33 +1,36 @@
 package com.company;
 
-public class SyntaxAnalyzer {
+class SyntaxAnalyzer {
     private int i = 0;
     private int checkStep = 0;
 
     private LexemsTable lexems;
 
-    public SyntaxAnalyzer(LexemsTable lexems){
+    SyntaxAnalyzer(LexemsTable lexems){
         this.lexems = lexems;
     }
 
     public boolean prog() throws Exception {
         this.i = 0;
         if(spOg()){
-            if(lexems.getLexems().get(this.i).getName().equals("{")){
+            if(lexems.getLexems().get(this.i).getName().equals("{")) {
                 this.i++;
-                while(isLexemEqual("¶")) this.i++;
-                if(spOp()){
-                    if(lexems.getLexems().get(this.i).getName().equals("}")){
-                        this.i++;
-                        return true;
+                if (isLexemEqual("¶")){
+                    this.i++;
+//                while(isLexemEqual("¶")) this.i++;
+                    if (spOp()) {
+                        if (lexems.getLexems().get(this.i).getName().equals("}")) {
+                            this.i++;
+                            return true;
+                        } else {
+                            throw new Exception("Error: excepted } on line" + lexems.getLexems().get(this.i).getLine());
+                        }
+                    } else {
+                        throw new Exception("Unexcpected operator " + lexems.getLexems().get(this.i).getName() + " on line " + line());
                     }
-                    else {
-                        throw new Exception("Error: excepted } on line" + lexems.getLexems().get(this.i).getLine());
-                    }
-                    }
-                    else{
-                    throw new Exception("Unexcpected operator " + lexems.getLexems().get(this.i).getName() +" on line "+ line());
-                }
+
+                  }
+                  else throw new Exception("Missed enter after {");
                 }
                 else{
                 throw new Exception("Excepted { on line" + lexems.getLexems().get(this.i).getLine());
@@ -40,37 +43,53 @@ public class SyntaxAnalyzer {
     }
 
     public boolean spOg() throws Exception {
+//        if(Og()){
+//            if(lexems.getLexems().get(this.i).getName().equals("¶") || isLexemEqual("{")){
+//                this.i++;
+//                while(!lexems.getLexems().get(this.i).getName().equals("{")){
+//                    if(Og()){
+//                        this.i++;
+//                        if(lexems.getLexems().get(this.i).getName().equals("¶")) {
+//                            this.i++;
+//                        }
+//                        else{
+//                            throw new Exception("You lost enter after definition!");
+//                        }
+//                    }
+//                    else {
+//                        throw new Exception("No ogolosh");
+//                    }
+//                }
+//                return true;
+//            }
+//            else {
+//                throw new Exception("You lost enter after definition!");
+//            }
+//        }
+//        else{
+//            throw new Exception("No ogolosh");
+//        }
+
         if(Og()){
-            if(lexems.getLexems().get(this.i).getName().equals("¶")){
-                this.i++;
-                while(!lexems.getLexems().get(this.i).getName().equals("{")){
+            while (!isLexemEqual("{")){
+                if(isLexemEqual("¶")){
+                    this.i++;
                     if(Og()){
-                        this.i++;
-                        if(lexems.getLexems().get(this.i).getName().equals("¶")) {
-                            this.i++;
-                        }
-                        else{
-                            throw new Exception("You lost enter after definition!");
-                        }
+//                        this.i++;
+//                        return true;
                     }
-                    else {
-                        throw new Exception("No ogolosh");
-                    }
+                    else throw new Exception("You lost definition on line "+line());
                 }
-                return true;
+                else throw new Exception("You lost enter after definition!");
             }
-            else {
-                throw new Exception("You lost enter after definition!");
-            }
+            return true;
         }
-        else{
-            throw new Exception("No ogolosh");
-        }
+        else throw new Exception("There is no definition on line "+line());
     }
+
     public boolean Og() throws Exception {
         if(type()){
             if(variablesList()){
-//                this.i++;
                 return true;
             }
             else{
@@ -103,8 +122,8 @@ public class SyntaxAnalyzer {
     public boolean variablesList() throws Exception {
         if(isIDN()){
             this.i++;
-                while(!lexems.getLexems().get(this.i).getName().equals("¶")){
-//                while(isIDN()){
+                while(!lexems.getLexems().get(this.i).getName().equals("¶") && !isLexemEqual("{")){
+
                     if(lexems.getLexems().get(this.i).getName().equals(",")){
                         this.i++;
                         if(isIDN()){
@@ -149,16 +168,8 @@ public class SyntaxAnalyzer {
                 return false;
             }
         }
-//        else{
-//            throw new Exception("No operation");
-//        }
-//
-//    }
 
     public boolean Op() throws Exception {
-//        if(tern()){
-//            return true;
-//        }
         if(assignment()){
             return true;
         }
@@ -176,7 +187,6 @@ public class SyntaxAnalyzer {
         }
         else{
             return false;
-//            throw new Exception("Wrong operator: "+lexems.getLexems().get(this.i).getName() + " on line "+ line());
         }
     }
 
@@ -198,14 +208,12 @@ public class SyntaxAnalyzer {
                 } else {
                     throw new Exception("Missed >> on line "+line());
                 }
-//            }while(!isLexemEqual("¶"));
             }while(isLexemEqual(">>"));
             this.i--;
             return true;
 
         }
         else return false;
-//        else throw new Exception("Missed cin");
     }
 
     public boolean output() throws Exception {
@@ -222,13 +230,11 @@ public class SyntaxAnalyzer {
                 } else {
                     throw new Exception("Missed << on line "+line());
                 }
-//            }while(!isLexemEqual("¶"));
             }while(isLexemEqual("<<"));
             this.i--;
             return true;
 
         }
-//        else throw new Exception("Missed cout");
         else return false;
     }
 
@@ -244,7 +250,6 @@ public class SyntaxAnalyzer {
                 else{
                     this.i = this.checkStep;
                     return false;
-//                    throw new Exception("Missing expression!");
                 }
             }
             else{
@@ -284,7 +289,6 @@ public class SyntaxAnalyzer {
                         throw new Exception("Missed ? on line "+line());
                     }
                 }
-                //
                 else {
                     this.i = this.checkStep;
                     return false;
@@ -368,16 +372,8 @@ public class SyntaxAnalyzer {
     }
 
     private boolean expression() throws Exception {
-//        this.checkStep = this.i;
         if(isT()){
             this.i++;
-//            if(isLexemEqual("+") || isLexemEqual("-")){
-//                this.i++;
-//                if(isT()){
-//                    return true;
-//                }
-//                else throw new Exception("Missed terminal on line "+line());
-//            }
             while (isLexemEqual("+") || isLexemEqual("-")){
                 this.i++;
                 if(isT()){
@@ -385,14 +381,10 @@ public class SyntaxAnalyzer {
                 }
                 else throw new Exception("Missed terminal on line "+line());
             }
-
-//            else {
                 this.i--;
                 return true;
-//            }
         }
         else {
-//            this.i = this.checkStep;
             return false;
         }
     }
@@ -404,26 +396,15 @@ public class SyntaxAnalyzer {
     private boolean isT() throws Exception {
         if(isF()){
             this.i++;
-
-//                if (isLexemEqual("*") || isLexemEqual("/")) {
-//                    this.i++;
-//                    if (isF()) {
-//                        return true;
-//                    } else throw new Exception("Missed terminal on line " + line());
-//
-//                } else
-//                {
-
             while (isLexemEqual("*") || isLexemEqual("/")){
                 this.i++;
                 if(isF()){
                     this.i++;
                 }
-                else throw new Exception("Missed terminal on line "+line());
+                else throw new Exception("Missed expression on line "+line()+" after "+ lexems.getLexems().get(i-1).getName());
             }
                     this.i--;
                     return true;
-//                }
             }
 
         return false;
@@ -455,7 +436,6 @@ public class SyntaxAnalyzer {
     private boolean LE() throws Exception {
         if(isLT()) {
             this.i++;
-
             while(isLexemEqual("OR")){
                 this.i++;
                 if (isLT()) {

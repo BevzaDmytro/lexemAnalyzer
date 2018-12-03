@@ -156,9 +156,9 @@ public class SyntaxAnalyzer {
 //    }
 
     public boolean Op() throws Exception {
-        if(tern()){
-            return true;
-        }
+//        if(tern()){
+//            return true;
+//        }
         if(assignment()){
             return true;
         }
@@ -293,10 +293,6 @@ public class SyntaxAnalyzer {
             }
 
 
-    
-
-
-
     public boolean condTransition() throws Exception {
         if(isLexemEqual("if")){
             this.i++;
@@ -372,7 +368,7 @@ public class SyntaxAnalyzer {
     }
 
     private boolean expression() throws Exception {
-        this.checkStep = this.i;
+//        this.checkStep = this.i;
         if(isT()){
             this.i++;
 //            if(isLexemEqual("+") || isLexemEqual("-")){
@@ -396,7 +392,7 @@ public class SyntaxAnalyzer {
 //            }
         }
         else {
-            this.i = this.checkStep;
+//            this.i = this.checkStep;
             return false;
         }
     }

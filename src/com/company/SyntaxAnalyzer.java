@@ -131,9 +131,7 @@ public class SyntaxAnalyzer {
             this.i++;
             if(lexems.getLexems().get(this.i).getName().equals("¶")){
                 this.i++;
-//                while (!lexems.getLexems().get(this.i).getName().equals("}")){
                 while (Op()){
-//                    if(Op()){
                         this.i++;
                         if(lexems.getLexems().get(this.i).getName().equals("¶")) {
                             this.i++;
@@ -143,9 +141,6 @@ public class SyntaxAnalyzer {
                         }
                     }
                     return true;
-//                    else{
-//                        throw new Exception("No operations");
-//                    }
                 }
                 this.i--;
                 return true;
@@ -161,9 +156,9 @@ public class SyntaxAnalyzer {
 //    }
 
     public boolean Op() throws Exception {
-        if(tern()){
-            return true;
-        }
+//        if(tern()){
+//            return true;
+//        }
         if(assignment()){
             return true;
         }
@@ -243,7 +238,7 @@ public class SyntaxAnalyzer {
             this.i++;
             if(isLexemEqual("=")){
                 this.i++;
-                if(expression()){
+                if(tern() || expression()){
                     return true;
                 }
                 else{
@@ -261,10 +256,6 @@ public class SyntaxAnalyzer {
 
     public boolean tern() throws Exception {
         this.checkStep = this.i;
-        if(isIDN()){
-            this.i++;
-            if(isLexemEqual("=")){
-                this.i++;
                 if(LE()){
                     this.i++;
                     if(isLexemEqual("?")){
@@ -293,19 +284,13 @@ public class SyntaxAnalyzer {
                         throw new Exception("Missed ? on line "+line());
                     }
                 }
+                //
                 else {
                     this.i = this.checkStep;
                     return false;
 //                    throw new Exception("It's not LE");
                 }
             }
-            else{
-                throw new Exception("Missed =");
-            }
-        }
-        else return false;
-    }
-
 
 
     public boolean condTransition() throws Exception {
@@ -383,6 +368,7 @@ public class SyntaxAnalyzer {
     }
 
     private boolean expression() throws Exception {
+//        this.checkStep = this.i;
         if(isT()){
             this.i++;
 //            if(isLexemEqual("+") || isLexemEqual("-")){
@@ -405,7 +391,10 @@ public class SyntaxAnalyzer {
                 return true;
 //            }
         }
-        return false;
+        else {
+//            this.i = this.checkStep;
+            return false;
+        }
     }
 
     private int line() {

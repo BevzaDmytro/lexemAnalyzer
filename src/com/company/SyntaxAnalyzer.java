@@ -260,41 +260,38 @@ class SyntaxAnalyzer {
     }
 
     public boolean tern() throws Exception {
-        this.checkStep = this.i;
-                if(LE()){
+        if(isLexemEqual("?")) {
+            this.i++;
+            if (LE()) {
+                this.i++;
+                if (isLexemEqual("?")) {
                     this.i++;
-                    if(isLexemEqual("?")){
+                    if (expression()) {
                         this.i++;
-                        if(expression()){
+                        if (isLexemEqual(":")) {
                             this.i++;
-                            if(isLexemEqual(":")){
-                                this.i++;
-                                if(expression()){
-                                    return true;
-                                }
-                                else {
-                                    throw new Exception("Missed expression!");
-                                }
+                            if (expression()) {
+                                return true;
+                            } else {
+                                throw new Exception("Missed expression!");
                             }
-                            else {
-                                throw new Exception("Missed :");
-                            }
+                        } else {
+                            throw new Exception("Missed :");
                         }
-
-                        else{
-                            throw new Exception("Missed expression!");
-                        }
+                    } else {
+                        throw new Exception("Missed expression!");
                     }
-                    else {
-                        throw new Exception("Missed ? on line "+line());
-                    }
+                } else {
+                    throw new Exception("Missed ? on line " + line());
                 }
-                else {
-                    this.i = this.checkStep;
-                    return false;
-//                    throw new Exception("It's not LE");
-                }
+            } else {
+//                    this.i = this.checkStep;
+//                    return false;
+                throw new Exception("It's not LE");
             }
+        }
+        else return false;
+    }
 
 
     public boolean condTransition() throws Exception {

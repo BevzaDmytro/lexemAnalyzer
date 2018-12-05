@@ -378,7 +378,7 @@ public class SyntaxAnalyzer {
         if(isLF()){
             while(isLexemEqual("AND")){
                     this.i++;
-                    if (isLF()) {
+                    if (!isLF()) {
                         throw new Exception("Missed logic terminal on line " + line());
                     }
             }

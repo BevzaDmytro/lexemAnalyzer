@@ -1,11 +1,13 @@
-package com.company;
+package com.company.analyzers;
 
-class SyntaxAnalyzer {
+import com.company.extensions.LexemsTable;
+
+public class SyntaxAnalyzer {
     private int i = 0;
 
     private LexemsTable lexems;
 
-    SyntaxAnalyzer(LexemsTable lexems){
+    public SyntaxAnalyzer(LexemsTable lexems){
         this.lexems = lexems;
     }
 
@@ -20,7 +22,7 @@ class SyntaxAnalyzer {
 
 
 
-    boolean prog() throws Exception {
+    public boolean prog() throws Exception {
         this.i = 0;
         if(spOg()){
             if(lexems.getLexems().get(this.i).getName().equals("{")) {

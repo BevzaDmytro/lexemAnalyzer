@@ -1,13 +1,8 @@
-package com.company;
+package com.company.analyzers;
 
-import com.company.extensions.InputLexemTable;
-import com.company.extensions.Lexem;
-import com.company.extensions.Checker;
-import com.company.graph.MyFrame;
+import com.company.extensions.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 
 public class Parser {
@@ -33,17 +28,6 @@ public class Parser {
         this.lexem = "";
     }
 
-//    private int readChar(){
-////        BufferedReader reader = null;
-//        int i = -1;
-//        try {
-//           i =  this.reader.read();
-//        } catch (IOException e) {
-//            e.getCause();
-//        }
-//
-//        return i;
-//    }
     
     public BufferedReader textToParse(boolean isFile, String text){
         BufferedReader reader = null;
@@ -61,19 +45,14 @@ public class Parser {
     }
 
     public void parse(boolean isFile, String text) throws Exception {
-        
         BufferedReader reader = this.textToParse(isFile, text);
-//        BufferedReader reader = this.textToParse(false, "int a, b, c");
 
         System.out.println("NICE");
         char symbol = ' ';
         this.state = 1;
         int line = 1;
-//            (c = reader.read()) != -1
         while (!this.EOF) {
             if(this.hasToRead) {
-//                if(this.readChar() ==  -1) {this.EOF = false; break;}
-//                 symbol = (char) this.readChar();
                 int c = 0;
                 try {
                     c = reader.read();
@@ -163,12 +142,10 @@ public class Parser {
                 case 2:
                     if(checker.isNumber(symbol) || checker.isLetter(symbol)){
                         this.lexem += Character.toString(symbol);
-//                        if(checker.isKeyword(this.lexem)){
                         Lexem newLex = new Lexem(this.lexem, "keyword", line);
                         if(this.inputLexemTable.isContain(newLex) ){
                             newLex.setCode(this.inputLexemTable.getCode(newLex));
                             this.lexemsTable.addLexem(newLex);
-//                            System.out.println("Lexem added: " + this.lexem);
                             this.lexem = "";
                             this.state = 1;
                         }
@@ -178,7 +155,6 @@ public class Parser {
                         if( this.lexemsTable.isDeclaration( newLex ) ) {
                             String type = this.lexemsTable.getFirstLineLexem(line);
                             newLex.setIdType(type);
-                            // перевірка на те чи не визначається повторно
                             if (!this.identificatorsTable.isDefined(newLex)) {
                                 this.identificatorsTable.addIdentificator(newLex);
                             }
@@ -214,7 +190,6 @@ public class Parser {
                         newLex.setCONCode(this.constantsTable.getNumberOfLexem(newLex));
                         newLex.setCode(101);
                         this.lexemsTable.addLexem(newLex);
-//                        System.out.println("Lexem added: " + this.lexem);
                         this.hasToRead = false;
                         this.state = 1;
                     }

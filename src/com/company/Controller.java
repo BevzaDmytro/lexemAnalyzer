@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.analyzers.Parser;
+import com.company.analyzers.SyntaxAnalyzer;
+
 public class Controller {
     private Parser parser;
     private SyntaxAnalyzer analyzer;
@@ -18,6 +21,7 @@ public class Controller {
 
         SyntaxAnalyzer analyzer = new SyntaxAnalyzer(parser.getLexemsTable());
         analyzer.prog();
+
     }
 
 }

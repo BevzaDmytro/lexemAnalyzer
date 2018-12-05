@@ -1,11 +1,11 @@
 package com.company;
 
 
-import com.company.graph.MyFrame;
+import com.company.views.MyFrame;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 	// write your code here
 //        Parser parser = new Parser();
 //        parser.parse(true, "programm.txt");

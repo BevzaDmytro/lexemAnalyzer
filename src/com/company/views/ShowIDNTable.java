@@ -1,15 +1,15 @@
-package com.company.graph;
+package com.company.views;
 
 import com.company.extensions.Lexem;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
-public class ShowCONTable  extends AbstractTableModel {
+public class ShowIDNTable extends AbstractTableModel {
 
     private ArrayList<Lexem> lexems;
 
-    ShowCONTable(ArrayList<Lexem> lexems) {
+    ShowIDNTable(ArrayList<Lexem> lexems) {
         super();
         this.lexems = lexems;
     }

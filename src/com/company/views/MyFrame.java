@@ -1,7 +1,6 @@
-package com.company.graph;
+package com.company.views;
 
 import com.company.Controller;
-import com.company.Parser;
 import com.company.extensions.Lexem;
 
 import javax.swing.*;
@@ -108,8 +107,6 @@ public class MyFrame {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-//                                MyFrame.this.show(parser.getLexemsTable().getLexems(), parser.getIdentificatorsTable().getLexems(), parser.getConstantsTable().getLexems());
-//                                MyFrame.this.show(lexemsTable, IDNTable, CONTable);
                             }
                         });
                         break;
@@ -128,33 +125,6 @@ public class MyFrame {
         input.add(browse);
         input.add(button1);
         input.add(button2);
-//        String text = this.getSelectedButtonText(group);
-
-//        if(text.equals("File")){
-//            browse.setEnabled(true);
-//            browse.addActionListener(new ActionListener() {
-//                public void actionPerformed(ActionEvent event) {
-//                    File selectedFile = new File("programm.txt");
-//                    JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-//                    int returnValue = fileChooser.showOpenDialog(null);
-//                    if (returnValue == JFileChooser.APPROVE_OPTION) {
-//                         selectedFile = fileChooser.getSelectedFile();
-//                    }
-//                    MyFrame.this.path = selectedFile.getAbsolutePath();
-//                    MyFrame.this.show(lexemsTable, IDNTable, CONTable);
-//                }
-//            });
-//        }
-//        else {
-//            insertButton.setEnabled(true);
-//            in.setEnabled(true);
-//            insertButton.addActionListener(new ActionListener() {
-//                public void actionPerformed(ActionEvent event) {
-//                    MyFrame.this.text = in.getText();
-//                    MyFrame.this.show(lexemsTable, IDNTable, CONTable);
-//                }
-//            });
-//        }
 
         this.panel.addTab("Input", input);
         this.frame.add(this.panel);
@@ -163,17 +133,7 @@ public class MyFrame {
 
     public void show(ArrayList<Lexem> lexemsTable, ArrayList<Lexem> IDNTable, ArrayList<Lexem> CONTable){
 
-//        this.panel.remove(panel1);
-//        this.panel.remove(panel2);
-//        this.panel.remove(panel3);
-//        this.panel.removeAll();
 
-//
-//         JPanel panel1 = new JPanel();
-//         JPanel panel2 = new JPanel();
-//         JPanel panel3 = new JPanel();
-//        this.panel.removeAll();
-        //Создаем новую таблицу на основе двумерного массива данных и заголовков
         JTable jTab1 = new JTable(new ShowLexemsTable(lexemsTable));
         JTable jTab2 = new JTable(new ShowIDNTable(IDNTable));
         JTable jTab3 = new JTable(new ShowCONTable(CONTable));

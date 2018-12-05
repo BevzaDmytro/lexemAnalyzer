@@ -1,4 +1,4 @@
-package com.company;
+package com.company.extensions;
 
 import com.company.extensions.Lexem;
 

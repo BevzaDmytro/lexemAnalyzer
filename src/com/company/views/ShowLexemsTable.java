@@ -1,4 +1,4 @@
-package com.company.graph;
+package com.company.views;
 
 import com.company.extensions.Lexem;
 

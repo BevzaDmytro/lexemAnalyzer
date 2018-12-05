@@ -10,6 +10,17 @@ class SyntaxAnalyzer {
         this.lexems = lexems;
     }
 
+
+    public boolean isLexemEqual(String string){
+        return lexems.getLexems().get(this.i).getName().equals(string);
+    }
+
+    private int line() {
+        return    lexems.getLexems().get(this.i).getLine();
+    }
+
+
+
     public boolean prog() throws Exception {
         this.i = 0;
         if(spOg()){
@@ -17,12 +28,13 @@ class SyntaxAnalyzer {
                 this.i++;
                 if (isLexemEqual("¶")){
                     this.i++;
-//                while(isLexemEqual("¶")) this.i++;
                     if (spOp()) {
+//                        this.i++;
                         if (lexems.getLexems().get(this.i).getName().equals("}")) {
                             this.i++;
                             return true;
-                        } else {
+                        }
+                        else {
                             throw new Exception("Error: excepted } on line" + lexems.getLexems().get(this.i).getLine());
                         }
                     } else {
@@ -101,17 +113,13 @@ class SyntaxAnalyzer {
         }
     }
 
-    public boolean type() throws Exception {
-        if(lexems.getLexems().get(this.i).getName().equals("int")){
+    public boolean type() {
+        if(isLexemEqual("int") || isLexemEqual("float")){
             this.i++;
             return true;
         }
-        else if(lexems.getLexems().get(this.i).getName().equals("float")){
-            this.i++;
-            return true;
-        }
-        else {
-            throw new Exception("Wrong type!");
+        else{
+            return false;
         }
     }
 
@@ -122,9 +130,9 @@ class SyntaxAnalyzer {
     public boolean variablesList() throws Exception {
         if(isIDN()){
             this.i++;
-                while(!lexems.getLexems().get(this.i).getName().equals("¶") && !isLexemEqual("{")){
+                while(!isLexemEqual("¶") && !isLexemEqual("{")){
 
-                    if(lexems.getLexems().get(this.i).getName().equals(",")){
+                    if(isLexemEqual(",")){
                         this.i++;
                         if(isIDN()){
                             this.i++;
@@ -137,7 +145,6 @@ class SyntaxAnalyzer {
                         throw new Exception("Missed , after IDN");
                     }
                 }
-
             return true;
         }
         else {
@@ -145,53 +152,43 @@ class SyntaxAnalyzer {
         }
     }
 
+
     public boolean spOp() throws Exception {
         if(Op()){
             this.i++;
-            if(lexems.getLexems().get(this.i).getName().equals("¶")){
+            while(isLexemEqual("¶")){
                 this.i++;
-                while (Op()){
-                        this.i++;
-                        if(lexems.getLexems().get(this.i).getName().equals("¶")) {
-                            this.i++;
-                        }
-                        else{
-                            throw new Exception("You lost enter after operation! on line "+ (line()-1));
-                        }
-                    }
-                    return true;
+                if(Op()){
+                   this.i++;
                 }
-                this.i--;
-                return true;
+                else  throw new Exception("Missed operator on line" + line());
             }
-            else{
-                return false;
-            }
-        }
-
-    public boolean Op() throws Exception {
-        if(assignment()){
-            return true;
-        }
-        if(loop()){
-            return true;
-        }
-        if(condTransition()){
-            return true;
-        }
-        if(input()){
-            return true;
-        }
-        if(output()){
             return true;
         }
         else{
             return false;
         }
-    }
+        }
 
-    public boolean isLexemEqual(String string){
-        return lexems.getLexems().get(this.i).getName().equals(string);
+    public boolean Op() throws Exception {
+//        if(assignment()){
+//            return true;
+//        }
+//        if(loop()){
+//            return true;
+//        }
+//        if(condTransition()){
+//            return true;
+//        }
+//        if(input()){
+//            return true;
+//        }
+        if(output() || input() || loop() || condTransition() || assignment()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public boolean input() throws Exception {
@@ -285,14 +282,11 @@ class SyntaxAnalyzer {
                     throw new Exception("Missed ? on line " + line());
                 }
             } else {
-//                    this.i = this.checkStep;
-//                    return false;
                 throw new Exception("It's not LE");
             }
         }
         else return false;
     }
-
 
     public boolean condTransition() throws Exception {
         if(isLexemEqual("if")){
@@ -302,7 +296,7 @@ class SyntaxAnalyzer {
                 if(isLexemEqual("then")){
                     this.i++;
                     if(spOp()){
-                        this.i++;
+//                        this.i++;
                         if(isLexemEqual("fi")){
                             return true;
                         }
@@ -337,7 +331,7 @@ class SyntaxAnalyzer {
                                 if(isLexemEqual("do")){
                                     this.i++;
                                     if(spOp()){
-                                        this.i++;
+//                                        this.i++;
                                         if(isLexemEqual("rof")){
                                             return true;
                                         }
@@ -386,9 +380,7 @@ class SyntaxAnalyzer {
         }
     }
 
-    private int line() {
-        return    lexems.getLexems().get(this.i).getLine();
-    }
+
 
     private boolean isT() throws Exception {
         if(isF()){

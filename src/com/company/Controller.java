@@ -3,10 +3,13 @@ package com.company;
 import com.company.analyzers.Parser;
 import com.company.analyzers.SyntaxAnalyzer;
 import com.company.analyzers.SyntaxAnalyzer2;
+import com.company.extensions.Configuration;
+import com.company.views.ConfigurationView;
 
 public class Controller {
     private Parser parser;
     private SyntaxAnalyzer analyzer;
+    SyntaxAnalyzer2 analyzer2;
 
     public Controller() {
         this.parser = new Parser();
@@ -17,13 +20,17 @@ public class Controller {
         return parser;
     }
 
+    public ConfigurationView getCongigurations(){
+        return this.analyzer2.getConfigurationView();
+    }
+
     public void run(boolean isFile, String text) throws Exception {
         this.parser.parse(isFile, text);
 
 //        SyntaxAnalyzer analyzer = new SyntaxAnalyzer(parser.getLexemsTable());
 //        analyzer.prog();
 
-        SyntaxAnalyzer2 analyzer2 = new SyntaxAnalyzer2(parser.getLexemsTable());
+        analyzer2 = new SyntaxAnalyzer2(parser.getLexemsTable());
         analyzer2.analyze();
 
     }

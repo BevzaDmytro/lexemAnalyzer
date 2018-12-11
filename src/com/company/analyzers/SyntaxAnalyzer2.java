@@ -1,6 +1,7 @@
 package com.company.analyzers;
 
 import com.company.extensions.*;
+import com.company.views.ConfigurationView;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -8,6 +9,12 @@ import java.util.Stack;
 public class SyntaxAnalyzer2 {
     private LexemsTable lexems;
     private int currentState;
+    private ConfigurationView configurationView = new ConfigurationView();
+    private boolean isExit = false;
+
+    public ConfigurationView getConfigurationView() {
+        return configurationView;
+    }
 
     public SyntaxAnalyzer2(LexemsTable lexemsTable) {
         this.lexems = lexemsTable;
@@ -19,29 +26,54 @@ public class SyntaxAnalyzer2 {
         Stack stack = new Stack();
         Lexem lexem;
         int i = 0;
+
+        String inputLexem = "";
+        String states = "";
+        String stackString = "";
         currentState = 1;
         while(i < lexems.getLexems().size()){
             lexem = lexems.getLexems().get(i);
 
+            Instruction instruction = getInstruction(stateController.getStateByNum(currentState), lexem.getName());
+            if(!instruction.getMark().equals("") && !this.isExit) {
+                inputLexem = lexem.getName();
+                states = String.valueOf(currentState);
+            }
             if(hasState(stateController.getStateByNum(currentState), lexem.getName())){
-                Instruction instruction = getInstruction(stateController.getStateByNum(currentState), lexem.getName());
+                this.isExit =  false;
                 if(instruction.getStackNum() != 0){
                     stack.push(instruction.getStackNum());
+                    stackString = stack.toString();
                 }
                 if(instruction.getBeta() != 0){
                     currentState = instruction.getBeta();
                 }
                 else if(instruction.getFunc().equals("exit")){
-                    if(!stack.empty())
+                    if(!stack.empty()) {
                         currentState = (int) stack.pop();
-                    else System.out.println("Stack is empty, programm finished");
+                        states += "," + String.valueOf(currentState);
+                    }
+                    else {
+                        stackString = "";
+                        configurationView.addConfiguration(new Configuration(inputLexem, states, stackString));
+                        System.out.println("Stack is empty, programm finished");
+                    }
 //                    continue;
                 }
                 i++;
+                if(i<lexems.getLexems().size()) {
+                    if (!lexems.getLexems().get(i).equals("")) {
+                        configurationView.addConfiguration(new Configuration(inputLexem, states, stackString));
+                    }
+                }
             }
             else{
-                if(stateController.getStateByNum(currentState).getDefaultFunc().equals("exit")){
+                if(stateController.getStateByNum(currentState).getDefaultFunc().equals("exit")){ //nezr
+                    this.isExit = true;
+//                    states = String.valueOf(currentState);
                     currentState = (int) stack.pop();
+                    states += "," + String.valueOf(currentState);
+//                    configurationView.addConfiguration(new Configuration(inputLexem, states, stackString));
                     continue;
                 }
                 else if(stateController.getStateByNum(currentState).getDefaultFunc().equals("err")){
@@ -52,6 +84,7 @@ public class SyntaxAnalyzer2 {
                     currentState =Integer.parseInt(str.substring(str.indexOf('<') + 1, str.indexOf('>')));
                     int toStack =  Integer.parseInt(str.substring(str.indexOf(',')+1));
                     stack.push(toStack);
+                    stackString = stack.toString();
                     continue;
 //                    stack.push(stateController.getStates().get(i).getStack());
 //                    currentState = stateController.getStates().get(i).getBeta();
@@ -61,6 +94,7 @@ public class SyntaxAnalyzer2 {
 
 
         }
+        System.out.println("Well done");
     }
 
     public boolean hasState(State state, String name){

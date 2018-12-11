@@ -23,6 +23,7 @@ public class MyFrame {
     private JPanel panel1;
     private JPanel panel2;
     private JPanel panel3;
+    private JPanel panel4;
 
 
     public MyFrame() {
@@ -35,13 +36,15 @@ public class MyFrame {
         this.panel1= new JPanel();
         this.panel2 = new JPanel();
         this.panel3 = new JPanel();
+        this.panel4 = new JPanel();
 
     }
 
     private void analyze(boolean isFile, String text) throws Exception {
         Controller controller = new Controller();
         controller.run(isFile, text);
-        MyFrame.this.show(controller.getParser().getLexemsTable().getLexems(), controller.getParser().getIdentificatorsTable().getLexems(), controller.getParser().getConstantsTable().getLexems());
+//        MyFrame.this.show(controller.getParser().getLexemsTable().getLexems(), controller.getParser().getIdentificatorsTable().getLexems(), controller.getParser().getConstantsTable().getLexems());
+        MyFrame.this.show(controller.getParser().getLexemsTable().getLexems(), controller.getParser().getIdentificatorsTable().getLexems(), controller.getParser().getConstantsTable().getLexems(), controller.getCongigurations());
     }
 
     public void inputData(){
@@ -131,12 +134,46 @@ public class MyFrame {
         this.frame.setVisible(true);
     }
 
+    public void show(ArrayList<Lexem> lexemsTable, ArrayList<Lexem> IDNTable, ArrayList<Lexem> CONTable, ConfigurationView configurationView){
+
+
+        JTable jTab1 = new JTable(new ShowLexemsTable(lexemsTable));
+        JTable jTab2 = new JTable(new ShowIDNTable(IDNTable));
+        JTable jTab3 = new JTable(new ShowCONTable(CONTable));
+        JTable configurations = new JTable(configurationView);
+
+        panel1.removeAll();
+        panel2.removeAll();
+        panel3.removeAll();
+        panel4.removeAll();
+
+        panel1.add(jTab1);
+        panel1.add(new JScrollPane(jTab1));
+        panel2.add(jTab2);
+        panel2.add(new JScrollPane(jTab2));
+        panel3.add(jTab3);
+        panel3.add(new JScrollPane(jTab3));
+
+        panel4.add(configurations);
+        panel4.add(new JScrollPane(configurations));
+
+
+        this.panel.addTab("Lexems", this.panel1);
+        this.panel.addTab("Identificators", this.panel2);
+        this.panel.addTab("Constants", this.panel3);
+        this.panel.addTab("Configure", this.panel4);
+        this.frame.add(this.panel);
+        this.frame.setVisible(true);
+
+    }
+
     public void show(ArrayList<Lexem> lexemsTable, ArrayList<Lexem> IDNTable, ArrayList<Lexem> CONTable){
 
 
         JTable jTab1 = new JTable(new ShowLexemsTable(lexemsTable));
         JTable jTab2 = new JTable(new ShowIDNTable(IDNTable));
         JTable jTab3 = new JTable(new ShowCONTable(CONTable));
+        JTable configurations = new JTable();
 
         panel1.removeAll();
         panel2.removeAll();

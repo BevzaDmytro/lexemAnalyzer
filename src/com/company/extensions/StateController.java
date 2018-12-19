@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class StateController extends ArrayList<State> {
     private ArrayList<State> states;
 
+
     public StateController(){
         this.states = new ArrayList<>();
     }

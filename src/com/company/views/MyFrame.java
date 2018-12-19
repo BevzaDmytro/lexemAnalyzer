@@ -2,6 +2,7 @@ package com.company.views;
 
 import com.company.Controller;
 import com.company.extensions.Lexem;
+import com.company.extensions.State;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -24,6 +25,7 @@ public class MyFrame {
     private JPanel panel2;
     private JPanel panel3;
     private JPanel panel4;
+    private JPanel panel5;
 
 
     public MyFrame() {
@@ -37,6 +39,7 @@ public class MyFrame {
         this.panel2 = new JPanel();
         this.panel3 = new JPanel();
         this.panel4 = new JPanel();
+        this.panel5 = new JPanel();
 
     }
 
@@ -44,7 +47,9 @@ public class MyFrame {
         Controller controller = new Controller();
         controller.run(isFile, text);
 //        MyFrame.this.show(controller.getParser().getLexemsTable().getLexems(), controller.getParser().getIdentificatorsTable().getLexems(), controller.getParser().getConstantsTable().getLexems());
-        MyFrame.this.show(controller.getParser().getLexemsTable().getLexems(), controller.getParser().getIdentificatorsTable().getLexems(), controller.getParser().getConstantsTable().getLexems(), controller.getCongigurations());
+        MyFrame.this.show(controller.getParser().getLexemsTable().getLexems(), controller.getParser().getIdentificatorsTable().getLexems(),
+                controller.getParser().getConstantsTable().getLexems(),
+                controller.getCongigurations(), controller.getAnalyzer2().getStateController().getStates());
     }
 
     public void inputData(){
@@ -134,18 +139,25 @@ public class MyFrame {
         this.frame.setVisible(true);
     }
 
-    public void show(ArrayList<Lexem> lexemsTable, ArrayList<Lexem> IDNTable, ArrayList<Lexem> CONTable, ConfigurationView configurationView){
+    public void show(ArrayList<Lexem> lexemsTable, ArrayList<Lexem> IDNTable, ArrayList<Lexem> CONTable, ConfigurationView configurationView, ArrayList<State> states){
 
 
         JTable jTab1 = new JTable(new ShowLexemsTable(lexemsTable));
         JTable jTab2 = new JTable(new ShowIDNTable(IDNTable));
         JTable jTab3 = new JTable(new ShowCONTable(CONTable));
         JTable configurations = new JTable(configurationView);
+        JTable statesTable = new JTable(new StatesView(states));
+        statesTable.setRowHeight(50);
+        statesTable.setRowHeight(5,100);
+        statesTable.setRowHeight(26,60);
+        statesTable.setRowHeight(27,140);
+        statesTable.setRowHeight(30,140);
 
         panel1.removeAll();
         panel2.removeAll();
         panel3.removeAll();
         panel4.removeAll();
+        panel5.removeAll();
 
         panel1.add(jTab1);
         panel1.add(new JScrollPane(jTab1));
@@ -157,11 +169,14 @@ public class MyFrame {
         panel4.add(configurations);
         panel4.add(new JScrollPane(configurations));
 
+        panel5.add(statesTable);
+        panel5.add(new JScrollPane(statesTable));
 
         this.panel.addTab("Lexems", this.panel1);
         this.panel.addTab("Identificators", this.panel2);
         this.panel.addTab("Constants", this.panel3);
         this.panel.addTab("Configure", this.panel4);
+        this.panel.addTab("States", this.panel5);
         this.frame.add(this.panel);
         this.frame.setVisible(true);
 
@@ -174,6 +189,7 @@ public class MyFrame {
         JTable jTab2 = new JTable(new ShowIDNTable(IDNTable));
         JTable jTab3 = new JTable(new ShowCONTable(CONTable));
         JTable configurations = new JTable();
+
 
         panel1.removeAll();
         panel2.removeAll();

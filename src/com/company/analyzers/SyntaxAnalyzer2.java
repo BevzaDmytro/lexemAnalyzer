@@ -11,6 +11,7 @@ public class SyntaxAnalyzer2 {
     private int currentState;
     private ConfigurationView configurationView = new ConfigurationView();
     private boolean isExit = false;
+    StateController stateController;
 
     public ConfigurationView getConfigurationView() {
         return configurationView;
@@ -20,8 +21,12 @@ public class SyntaxAnalyzer2 {
         this.lexems = lexemsTable;
     }
 
+    public StateController getStateController() {
+        return stateController;
+    }
+
     public void analyze() throws Exception {
-        StateController stateController = new StateController();
+        stateController = new StateController();
         stateController.createStates();
         Stack stack = new Stack();
         Lexem lexem;
@@ -56,9 +61,8 @@ public class SyntaxAnalyzer2 {
                     else {
                         stackString = "";
                         configurationView.addConfiguration(new Configuration(inputLexem, states, stackString));
-                        System.out.println("Stack is empty, programm finished");
+//                        System.out.println("Stack is empty, programm finished");
                     }
-//                    continue;
                 }
                 i++;
                 if(i<lexems.getLexems().size()) {
@@ -66,18 +70,18 @@ public class SyntaxAnalyzer2 {
                         configurationView.addConfiguration(new Configuration(inputLexem, states, stackString));
                     }
                 }
+
             }
             else{
                 if(stateController.getStateByNum(currentState).getDefaultFunc().equals("exit")){ //nezr
                     this.isExit = true;
-//                    states = String.valueOf(currentState);
                     currentState = (int) stack.pop();
                     states += "," + String.valueOf(currentState);
 //                    configurationView.addConfiguration(new Configuration(inputLexem, states, stackString));
                     continue;
                 }
                 else if(stateController.getStateByNum(currentState).getDefaultFunc().equals("err")){
-                    throw new Exception("Error in state "+currentState+ " on lexem "+lexem.getName());
+                    throw new Exception("Error in state "+currentState+ " before lexem "+lexem.getName());
                 }
                 else {
                     String str = stateController.getStateByNum(currentState).getDefaultFunc();
@@ -89,15 +93,16 @@ public class SyntaxAnalyzer2 {
 //                    stack.push(stateController.getStates().get(i).getStack());
 //                    currentState = stateController.getStates().get(i).getBeta();
                 }
-//                i++;
             }
 
-
         }
-        System.out.println("Well done");
+        if(stack.empty() && currentState==5) {
+            System.out.println("Well done");
+        }
+        else throw new Exception("You have not finished programm");
     }
 
-    public boolean hasState(State state, String name){
+    private boolean hasState(State state, String name){
         ArrayList<Instruction> instructions = state.getInstructions();
 
         for (Lexem lexem: this.lexems.getLexems() ) {

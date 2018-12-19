@@ -24,6 +24,10 @@ public class Controller {
         return this.analyzer2.getConfigurationView();
     }
 
+    public SyntaxAnalyzer2 getAnalyzer2() {
+        return analyzer2;
+    }
+
     public void run(boolean isFile, String text) throws Exception {
         this.parser.parse(isFile, text);
 

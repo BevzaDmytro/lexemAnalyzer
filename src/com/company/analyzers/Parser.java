@@ -88,7 +88,7 @@ public class Parser {
                         this.state = 6;
                     }
                     else if(checker.isOneCharDelimiter(symbol)){
-                        if(checker.isPlusOrMinus(symbol) && !(this.lexemsTable.lastLexemType().equals("IDN") || this.lexemsTable.lastLexemType().equals("CON"))){
+                        if(checker.isPlusOrMinus(symbol) && !(this.lexemsTable.getLexems().get(this.lexemsTable.getLexems().size()-1).getName().equals(")") ||  this.lexemsTable.lastLexemType().equals("IDN") || this.lexemsTable.lastLexemType().equals("CON"))){
                            this.lexem += Character.toString(symbol);
                            this.state = 4;
                            continue;
